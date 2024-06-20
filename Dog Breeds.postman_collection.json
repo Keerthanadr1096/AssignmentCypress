@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "98442451-2612-4b35-ae5a-f8abe913b109",
+		"name": "Dog Breeds",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24289579",
+		"_collection_link": "https://www.postman.com/dark-satellite-224678/workspace/interview-assignment/collection/24289579-98442451-2612-4b35-ae5a-f8abe913b109?action=share&source=collection_link&creator=24289579"
+	},
+	"item": [
+		{
+			"name": "Get Dog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Define the expected schema for the response\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"message\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": {\r",
+							"                \"type\": \"array\",\r",
+							"                \"items\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            }\r",
+							"        },\r",
+							"        \"status\": {\r",
+							"            \"type\": \"string\"\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"message\", \"status\"]\r",
+							"};\r",
+							"\r",
+							"// Test to ensure the response status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to ensure the response schema matches the expected schema\r",
+							"pm.test(\"Schema is valid\", function() {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Test to ensure the 'status' field in the response is 'success'\r",
+							"pm.test(\"Status is success\", function () {\r",
+							"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"});\r",
+							"\r",
+							"// Test to ensure the 'message' object is not empty\r",
+							"pm.test(\"Message object is not empty\", function () {\r",
+							"    pm.expect(Object.keys(jsonData.message).length).to.be.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"const breedsObject = jsonData.message;\r",
+							"let individualBreeds = [];\r",
+							"\r",
+							"// Iterate over each breed in the 'message' object\r",
+							"for (const breed in breedsObject) {\r",
+							"    if (breedsObject.hasOwnProperty(breed)) {\r",
+							"        // Check if the breed has sub-breeds\r",
+							"        if (breedsObject[breed].length > 0) {\r",
+							"            // If sub-breeds exist, combine breed with each sub-breed\r",
+							"            breedsObject[breed].forEach(subBreed => {\r",
+							"                individualBreeds.push(`${breed} ${subBreed}`);\r",
+							"            });\r",
+							"        } else {\r",
+							"            // If no sub-breeds, just add the breed\r",
+							"            individualBreeds.push(breed);\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"// Output the list of individual dog breeds to the console\r",
+							"console.log(\"List of individual dog breeds:\", individualBreeds);\r",
+							"\r",
+							"// Test to ensure there are no duplicate breeds in the list\r",
+							"pm.test(\"No duplicate breeds in the list\", function() {\r",
+							"    let uniqueBreeds = [...new Set(individualBreeds)];\r",
+							"    pm.expect(uniqueBreeds.length).to.eql(individualBreeds.length);\r",
+							"});\r",
+							"\r",
+							"// Test to ensure all sub-breeds are strings\r",
+							"pm.test(\"All sub-breeds are strings\", function() {\r",
+							"    for (const breed in breedsObject) {\r",
+							"        if (breedsObject.hasOwnProperty(breed)) {\r",
+							"            // Check that each breed's sub-breeds are stored in an array\r",
+							"            pm.expect(breedsObject[breed]).to.be.an(\"array\");\r",
+							"            // Check that each sub-breed in the array is a string\r",
+							"            breedsObject[breed].forEach(subBreed => {\r",
+							"                pm.expect(subBreed).to.be.a(\"string\");\r",
+							"            });\r",
+							"        }\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breeds/list/all",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breeds",
+						"list",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
