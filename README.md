@@ -1,5 +1,5 @@
 Download the .json file into the local machine,
-import the collection from postman,
+import the collection to postman,
 Send the get request and validate the result,
 Interview assignment questions are attached in every branch.(Folder Name:Interview test)
 
