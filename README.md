@@ -7,4 +7,7 @@ Task1: Javascript Program
   Click on choose file button 
   select the 2017.csv file and click on ok button
   list of unique breeds will be displayed in browser
-  
+
+  Interview assignment questions are attached in every branch.(Folder Name:Interview test)
+
+Note: In the interview assignment questions file it is mentioned that the assignment should be done in Python. But during Manager round-1 it was informed that,the current opening is for Javascript with Cypress.Hence the execrcise is done in Javascript with cypress
