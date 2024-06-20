@@ -4,40 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Normalize Dog Breeds</title>
+    <!-- Include PapaParse library for parsing CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
     <h1>Normalize Dog Breeds</h1>
     <p>Select a CSV file containing dog breed data:</p>
+    <!-- Input element for selecting a CSV file -->
     <input type="file" id="fileInput" />
+    <!-- Button to trigger processing of the selected file -->
     <button id="processButton" disabled>OK</button>
+    <!-- Pre element to display output -->
     <pre id="output"></pre>
 
     <script>
         let file;
 
+        // Event listener for file input change
         document.getElementById('fileInput').addEventListener('change', function(event) {
             file = event.target.files[0];
             if (file) {
+                // Enable process button once file is selected
                 document.getElementById('processButton').disabled = false;
                 console.log("File selected: ", file.name);
             }
         });
 
+        // Event listener for process button click
         document.getElementById('processButton').addEventListener('click', function() {
             if (file) {
                 console.log("Processing file: ", file.name);
+                // Using PapaParse to parse the CSV file
                 Papa.parse(file, {
-                    header: true,
+                    header: true, // Treat first row as header
                     complete: function(results) {
                         console.log("Parsing complete. Results:", results);
                         const data = results.data;
+                        // Extracting breed names from parsed data
                         const breeds = data.map(row => row.Breed).filter(breed => breed); // Filter out any undefined or null values
                         console.log("Extracted breeds: ", breeds);
+                        // Normalizing breed names (removing spaces and converting to lowercase)
                         const normalizedBreeds = breeds.map(breed => breed.replace(/\s+/g, '').toLowerCase());
                         console.log("Normalized breeds: ", normalizedBreeds);
+                        // Getting unique normalized breed names
                         const uniqueBreeds = [...new Set(normalizedBreeds)];
                         console.log("Unique breeds: ", uniqueBreeds);
+                        // Displaying unique breed names in the output element
                         const outputElement = document.getElementById('output');
                         outputElement.textContent = JSON.stringify(uniqueBreeds, null, 2);
                     },
