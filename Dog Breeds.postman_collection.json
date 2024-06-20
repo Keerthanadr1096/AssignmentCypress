@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "98442451-2612-4b35-ae5a-f8abe913b109",
+		"name": "Dog Breeds",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24289579",
+		"_collection_link": "https://www.postman.com/dark-satellite-224678/workspace/interview-assignment/collection/24289579-98442451-2612-4b35-ae5a-f8abe913b109?action=share&source=collection_link&creator=24289579"
+	},
+	"item": [
+		{
+			"name": "Get Dog",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"message\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"additionalProperties\": {\r",
+							"                \"type\": \"array\",\r",
+							"                \"items\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            }\r",
+							"        },\r",
+							"        \"status\": {\r",
+							"            \"type\": \"string\"\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"message\", \"status\"]\r",
+							"};\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Schema is valid\", function() {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status is success\", function () {\r",
+							"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"});\r",
+							"pm.test(\"Message object is not empty\", function () {\r",
+							"    pm.expect(Object.keys(jsonData.message).length).to.be.greaterThan(0);\r",
+							"});\r",
+							"const breedsObject = jsonData.message;\r",
+							"let individualBreeds = [];\r",
+							"for (const breed in breedsObject) {\r",
+							"    if (breedsObject.hasOwnProperty(breed)) {\r",
+							"        if (breedsObject[breed].length > 0) {\r",
+							"            breedsObject[breed].forEach(subBreed => {\r",
+							"                individualBreeds.push(`${breed} ${subBreed}`);\r",
+							"            });\r",
+							"        } else {\r",
+							"            individualBreeds.push(breed);\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"console.log(\"List of individual dog breeds:\", individualBreeds);\r",
+							"pm.test(\"No duplicate breeds in the list\", function() {\r",
+							"    let uniqueBreeds = [...new Set(individualBreeds)];\r",
+							"    pm.expect(uniqueBreeds.length).to.eql(individualBreeds.length);\r",
+							"});\r",
+							"pm.test(\"All sub-breeds are strings\", function() {\r",
+							"    for (const breed in breedsObject) {\r",
+							"        if (breedsObject.hasOwnProperty(breed)) {\r",
+							"            pm.expect(breedsObject[breed]).to.be.an(\"array\");\r",
+							"            breedsObject[breed].forEach(subBreed => {\r",
+							"                pm.expect(subBreed).to.be.a(\"string\");\r",
+							"            });\r",
+							"        }\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dog.ceo/api/breeds/list/all",
+					"protocol": "https",
+					"host": [
+						"dog",
+						"ceo"
+					],
+					"path": [
+						"api",
+						"breeds",
+						"list",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
