@@ -10,6 +10,6 @@ Steps to clone the repository and execute the code:,
   7.Click on Start E2E testing in chrome,
   8.Browser will be launched and test will be executed.
 
-Interview assignment questions are attached in every branch.(Folder Name:Interview test)
+Interview assignment questions are attached in every branch.(Folder Name:Interview_test_v4.zip)
 
 Note: In the interview assignment questions file it is mentioned that the assignment should be done in Python. But during Manager round-1 it was informed that,the current opening is for Javascript with Cypress.Hence the execrcise is done in Javascript with cypress
