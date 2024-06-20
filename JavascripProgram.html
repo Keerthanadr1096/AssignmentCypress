@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normalize Dog Breeds</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <h1>Normalize Dog Breeds</h1>
+    <p>Select a CSV file containing dog breed data:</p>
+    <input type="file" id="fileInput" />
+    <button id="processButton" disabled>OK</button>
+    <pre id="output"></pre>
+
+    <script>
+        let file;
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            file = event.target.files[0];
+            if (file) {
+                document.getElementById('processButton').disabled = false;
+                console.log("File selected: ", file.name);
+            }
+        });
+
+        document.getElementById('processButton').addEventListener('click', function() {
+            if (file) {
+                console.log("Processing file: ", file.name);
+                Papa.parse(file, {
+                    header: true,
+                    complete: function(results) {
+                        console.log("Parsing complete. Results:", results);
+                        const data = results.data;
+                        const breeds = data.map(row => row.Breed).filter(breed => breed); // Filter out any undefined or null values
+                        console.log("Extracted breeds: ", breeds);
+                        const normalizedBreeds = breeds.map(breed => breed.replace(/\s+/g, '').toLowerCase());
+                        console.log("Normalized breeds: ", normalizedBreeds);
+                        const uniqueBreeds = [...new Set(normalizedBreeds)];
+                        console.log("Unique breeds: ", uniqueBreeds);
+                        const outputElement = document.getElementById('output');
+                        outputElement.textContent = JSON.stringify(uniqueBreeds, null, 2);
+                    },
+                    error: function(error) {
+                        console.error("Error parsing file: ", error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
