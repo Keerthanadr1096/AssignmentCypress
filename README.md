@@ -1,7 +1,4 @@
-Task 1:
-
-
-
+Task 3:
 Pre-requisite:Node.js and npm should be installed in the machine
 Steps to clone the repository and execute the code:
   1.Clone the repository using command:"git clone https://github.com/Keerthanadr1096/AssignmentCypress"
